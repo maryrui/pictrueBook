@@ -219,7 +219,7 @@
         color:#333;
     }
     .detail_money>p:first-child span{
-        color:#FF7EA3;
+        color:#ff5044;
         font-weight:700;
     }
     .footer{

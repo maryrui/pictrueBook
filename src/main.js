@@ -16,7 +16,7 @@ Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
     //  第一次进入项目
-    let userId = window.localStorage.getItem("userId");
+    let userId = window.sessionStorage.getItem("userId");
     if(to.meta.title){
       document.title=to.meta.title;
     }
@@ -31,12 +31,20 @@ router.beforeEach((to, from, next) => {
         }else{
             localStorage.setItem("beforeLoginUrl", to.path);
         }
-
-        // next();
     }
     if (userId) {
+        console.log((store))
         store.commit('SET_USERID',userId);
-        store.commit('SET_TOKEN',localStorage.getItem('token'));
+        store.commit('SET_TOKEN',sessionStorage.getItem('token'));
+        let data=store.getters.userInfo;
+        data=JSON.stringify(data)
+        console.log(data);
+        if(data=='{}'){
+            store.dispatch('GetUserInfo').then(()=>{
+                next ();
+                return false;
+            });
+        }
     }
         next();
 });

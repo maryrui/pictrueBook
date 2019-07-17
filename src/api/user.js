@@ -80,3 +80,12 @@ export function getGeneralize(query){
         params: query
     })
 }
+
+//忘记密码验证信息
+export function findPassValidateBank(data){
+    return request({
+        url:'/api/UserApi/ForgetDrawMoneyPassword',
+        method: 'post',
+        data
+    })
+}

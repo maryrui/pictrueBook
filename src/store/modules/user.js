@@ -1,11 +1,10 @@
 import {getProductDetail} from '@/api/index'
-import {regUser} from '@/api/user'
+import {getUserInfo} from '@/api/user'
 const user={
     state:{
         goodsId:1001,
-        userId:localStorage.getItem('userId'),
-        phone:"",
-        token:localStorage.getItem('token'),
+        token:sessionStorage.getItem('token'),
+        userId:sessionStorage.getItem('userId'),
         goods:null,
         userInfo:{}
     },
@@ -34,9 +33,9 @@ const user={
                 })
             })
         },
-        getUserInfo({commit,state}){
+        GetUserInfo({commit,state}){
             return new Promise((resolve,reject)=>{
-                regUser().then(res=>{
+                getUserInfo({userId:state.userId}).then(res=>{
                     commit('SET_USERINFO',res.Data);
                     resolve(res)
                 }).catch(error=>{

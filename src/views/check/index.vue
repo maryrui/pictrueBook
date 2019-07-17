@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="button-box">
-            <van-button type="danger" size="large" @click="$router.push('/bankExtract/'+inCome)">提现</van-button>
+            <van-button type="danger" size="large" @click="$router.push('/checkList/'+inCome)">去提现</van-button>
         </div>
     </div>
 </template>

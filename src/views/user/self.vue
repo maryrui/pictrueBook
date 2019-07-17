@@ -5,7 +5,7 @@
             <li @click="setName"><label>修改昵称</label><p>{{user ? user.Name : ""}}<van-icon name="arrow"></van-icon></p></li>
             <li @click="sexShow=true"><label>性别</label><p>{{sex}}<van-icon name="arrow"></van-icon></p></li>
         </ul>
-        <div>
+        <div class="self_btn">
             <van-button type="danger" size="large" @click="saveClick">保存</van-button>
         </div>
         <van-popup v-model="sexShow"  position="bottom" :overlay="true">
@@ -123,7 +123,7 @@
         padding:0 16px 0;
         background: #fff;
     }
-    .self_box>div{
+    .self_box>.self_btn{
         margin-top:54px;
         padding:0 16px;
     }
@@ -149,7 +149,7 @@
         margin-left:6px;
     }
     .self_box li:last-child p{
-        color:#FF7EA3;
+        color:#ff5044;
     }
     .self_box li:last-child i{
         color:#999;

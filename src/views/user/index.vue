@@ -1,19 +1,24 @@
 <template>
     <div class="home">
         <div class="hom_top">
-            <div class="user_pic" @click="$router.push('/self')">
-                <p><img :src="userInfo ? userInfo.ImagePath : ''" alt=""></p>
-                <h2>{{userInfo ? userInfo.Name : ''}}</h2>
-                <van-icon name="arrow" />
+            <div class="user_pic">
+                <div @click="$router.push('/self')">
+                    <p><img :src="userInfo ? userInfo.ImagePath : ''" alt=""></p>
+                    <div>
+                        <h2>{{userInfo ? userInfo.Name : ''}}</h2>
+                        <span>{{userInfo ? userInfo.UserGrade : ''}}</span>
+                    </div>
+                </div>
+                <button @click="$router.push('/bankExtract')">申请提现</button>
             </div>
             <div class="user_detail">
-                <div @click="$router.push('/check/'+userInfo.Income)">
-                    <h3>{{userInfo ? userInfo.Income.toFixed(2) : ''}}</h3>
-                    <span>收益</span>
+                <div @click="$router.push('/sale/'+userInfo.EstimateIncome )">
+                    <h3>{{userInfo ? userInfo.EstimateIncome : 0}}</h3>
+                    <span>预估收益</span>
                 </div>
-                <div @click="$router.push('/sale')">
-                    <h3>{{userInfo ? userInfo.SellCount: 0}} <i>笔</i></h3>
-                    <span>销售明细</span>
+                <div>
+                    <h3>{{userInfo ? userInfo.Income : ''}}</h3>
+                    <span>可提现收益</span>
                 </div>
             </div>
         </div>
@@ -49,12 +54,20 @@
                 </div>
             </div>
             <ul class="">
+                <li @click="$router.push('/bank')">
+                    <span>我的银行卡</span>
+                    <van-icon name="arrow"></van-icon>
+                </li>
                 <li @click="$router.push('/service')">
                     <span>联系客服</span>
                     <van-icon name="arrow"></van-icon>
                 </li>
                 <li @click="$router.push('/address/0')">
                     <span>收货地址</span>
+                    <van-icon name="arrow"></van-icon>
+                </li>
+                <li @click="$router.push('/team')">
+                    <span>我的团队</span>
                     <van-icon name="arrow"></van-icon>
                 </li>
                 <li @click="$router.push('/generalize')" v-if="userInfo ? userInfo.IsAgent : ''">
@@ -67,52 +80,61 @@
 </template>
 
 <script>
-    import {getUserInfo} from '@/api/user'
     import {mapGetters} from 'vuex'
     export default {
         name: "index",
         data(){
             return {
-                userInfo:null
+                // userInfo:null
             }
         },
-        created(){
-            this.getUserDetail();
+        mounted(){
+            // this.getUserDetail();
         },
         computed:{
             ...mapGetters([
-                'userId'
+                'userId',
+                'token',
+                'userInfo'
             ])
         },
         methods:{
-            getUserDetail(){
-                getUserInfo({userId:this.userId}).then(res=>{
-                    if(res.Success){
-                        this.userInfo=res.Data;
-                    }
-                })
-            }
+
         }
     }
 </script>
 
 <style scoped>
     .home{
-        background:#F3F4F6
+        background:#f2f3f5;
     }
     .hom_top{
         height:200px;
         padding: 0 20px;
-        background:#FF7EA3;
+        background:#ff5044;
         box-sizing: border-box;
         color:#fff;
-        border:1px solid #ff7ea3;
+        border:1px solid #ff5044;
     }
     .user_pic{
         margin-top:25px;
         display: flex;
-        justify-content: space-around;
+        font-size:12px;
+        justify-content: space-between;
         align-items:center;
+    }
+    .user_pic button{
+        display: inline-block;
+        padding:3px 8px;
+        background: 0;
+        color:#fff;
+        border:1px solid #fff;
+    }
+    .user_pic>div{
+        display: flex;
+    }
+    .user_pic>div>div{
+        margin-left:16px;
     }
     .user_pic>p{
         width:20%;
@@ -121,8 +143,9 @@
     .user_pic i{
         font-size:20px;
     }
-    .user_pic>h2{
-        width:50%;
+    .user_pic>div{
+        width:65%;
+        font-size:16px;
     }
     .user_pic img{
         width:64px;
@@ -141,7 +164,6 @@
     }
     .user_detail h3{
         font-size:20px;
-        line-height:5px;
     }
     .user_detail>div{
         text-align:center;
@@ -160,6 +182,7 @@
     .home_content{
         background:#fff;
         padding:23px;
+        box-shadow: 0px 0px 40px #600b06;
         border-top-left-radius:10px;
         border-top-right-radius:10px;
         position:relative;

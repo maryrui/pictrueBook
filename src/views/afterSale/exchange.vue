@@ -1,9 +1,9 @@
 <template>
     <div class="exchange">
         <div class="goods_box">
-            <img :src="detail.Product ? detail.Product.ImagePath : ''" alt="">
+            <img :src="detail ? detail.ImagePath : ''" alt="">
             <p>
-                {{detail.Product ? detail.Product.Name : ''}}
+                {{detail ? detail.ProductName : ''}}
             </p>
             <div>
                 <span>￥{{detail.Price}}</span> <br>
@@ -170,6 +170,7 @@
     .goods_box{
         display: flex;
         padding:10px 16px;
+        align-items: center;
         border-bottom:8px solid #E7E7E7;
     }
     .goods_box img{
@@ -198,7 +199,7 @@
         align-items:center;
     }
     .content b{
-        color:#FF7EA3;
+        color:#ff5044;
         font-weight:500;
     }
     .content>div b+span{

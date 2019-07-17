@@ -255,11 +255,11 @@
         height:30px;
         text-align:center;
         line-height:30px;
-        color:#FF7EA3;
+        color:#ff5044;
         border:1px solid #ddd;
     }
     .select_box>div ul li.active{
-        background:#FF7EA3;
+        background:#ff5044;
         color:#fff;
     }
     .custom_box{

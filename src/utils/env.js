@@ -13,12 +13,12 @@ let imgBaseUrl = 'http://images.cangdu.org/';
 
 
 if (process.env.NODE_ENV == 'development') {
-        baseUrl="http://unicorn.aiteyou.net";
-    // baseUrl="http://192.168.0.222";
+        baseUrl="http://release.aiteyou.net";
+    // baseUrl="http://192.168.0.134";
 }else if(process.env.NODE_ENV == 'production'){
 
-    // baseUrl = 'http://cangdu.org:8001';
-    baseUrl="http://unicorn.aiteyou.net";
+    baseUrl = 'http://release.aiteyou.net';
+    // baseUrl="http://interface.aiteyou.net";
 }
 
 export {

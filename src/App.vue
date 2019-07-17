@@ -33,17 +33,15 @@ export default {
             home_icon:{
                 normal: '../../static/images/user.png',
                 active: '../../static/images/user_active.png'
-            }
-        }
-    },
-    computed:{
-        active(){
-            return this.$route.path=='/user' ?  1 : 0;
+            },
+            active:this.$route.path=='/user' ?  1 : 0
         }
     },
 }
 </script>
 
 <style>
-
+    #app{
+        background:#fff;
+    }
 </style>

@@ -14,12 +14,12 @@
                             </p>
                         </div>
                         <div class="middle" @click="$router.push('/orderDetail/'+item.OrderNumber)">
-                            <img :src="item.Product ? item.Product.ImagePath : ''" alt="">
+                            <img :src="item ? item.ImagePath : ''" alt="">
                             <p>
-                               {{item.Product ? item.Product.Name : ''}}
+                               {{item ? item.ProductName : ''}}
                             </p>
                             <div>
-                                <span>￥ {{item.Product ? item.Product.Price : 0.00}}</span> <br>
+                                <span>￥ {{item ? item.Price : 0.00}}</span> <br>
                                 <b>× {{item.Count}}</b>
                             </div>
                         </div>
@@ -61,12 +61,12 @@
                             </p>
                         </div>
                         <div class="middle" @click="$router.push('/orderDetail/'+item.OrderNumber)">
-                            <img :src="item.Product ? item.Product.ImagePath : ''" alt="">
+                            <img :src="item ? item.ImagePath : ''" alt="">
                             <p>
-                                {{item.Product ? item.Product.Name : ''}}
+                                {{item ? item.ProductName : ''}}
                             </p>
                             <div>
-                                <span>￥ {{item.Product ? item.Product.Price : 0.00}}</span> <br>
+                                <span>￥ {{item ? item.Price : 0.00}}</span> <br>
                                 <b>× {{item.Count}}</b>
                             </div>
                         </div>
@@ -96,12 +96,12 @@
                             </p>
                         </div>
                         <div class="middle" @click="$router.push('/orderDetail/'+item.OrderNumber)">
-                            <img :src="item.Product ? item.Product.ImagePath : ''" alt="">
+                            <img :src="item ? item.ImagePath : ''" alt="">
                             <p>
-                                {{item.Product ? item.Product.Name : ''}}
+                                {{item ? item.ProductName : ''}}
                             </p>
                             <div>
-                                <span>￥ {{item.Product ? item.Product.Price : 0.00}}</span> <br>
+                                <span>￥ {{item ? item.Price : 0.00}}</span> <br>
                                 <b>× {{item.Count}}</b>
                             </div>
                         </div>
@@ -131,12 +131,12 @@
                             </p>
                         </div>
                         <div class="middle" @click="$router.push('/orderDetail/'+item.OrderNumber)">
-                            <img :src="item.Product ? item.Product.ImagePath : ''" alt="">
+                            <img :src="item ? item.ImagePath : ''" alt="">
                             <p>
-                                {{item.Product ? item.Product.Name : ''}}
+                                {{item ? item.ProductName : ''}}
                             </p>
                             <div>
-                                <span>￥ {{item.Product ? item.Product.Price : 0.00}}</span> <br>
+                                <span>￥ {{item ? item.Price : 0.00}}</span> <br>
                                 <b>× {{item.Count}}</b>
                             </div>
                         </div>
@@ -435,7 +435,7 @@
         align-items: center;
     }
     .order_box .list li .top b{
-        color:#FF7EA3;
+        color:#ff5044;
         padding-right:5px;
     }
     .order_box .list li .top  i{
@@ -447,6 +447,7 @@
     .order_box .list li .middle{
         display: flex;
         padding:10px 0;
+        align-items: center;
         border-bottom:1px solid #E7E7E7;
     }
     .order_box .list li .middle img{
@@ -459,7 +460,7 @@
     }
     .order_box .list li .middle>div{
         text-align: right;
-        width:15%;
+        width:20%;
     }
     .order_box .list li .bottom{
         padding:10px 0;
@@ -485,12 +486,12 @@
         margin-left:20px;
     }
     .order_box .list li .bottom button.danger{
-        background:#ff7ea3;
+        background:#ff5044;
         color:#fff;
-        border-color:#ff7ea3;
+        border-color:#ff5044;
     }
     .order_box .list li .bottom button.enter{
-        background:#FF7EA3;
+        background:#ff5044;
         color:#fff;
         border:0;
     }
@@ -519,7 +520,7 @@
         font-size:14px;
     }
     .popup_box>p span{
-        color:#FF7EA3;
+        color:#ff5044;
     }
     .popup_box>div{
         display: flex;

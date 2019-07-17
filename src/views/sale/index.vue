@@ -1,281 +1,134 @@
 <template>
-    <div class="order_box">
-        <van-tabs v-model="active" swipeable animated  sticky>
-            <van-tab  title="全部 ">
-                <ul class="list">
-                    <li v-for="(item,index) in orderList.all" :key="item.OrderNumber">
-                        <div class="top">
-                            <span>
-                                订单号：{{item.OrderNumber}}
-                            </span>
-                            <p>
-                                <b>{{item.OrderState | orderState}}</b>
-                            </p>
-                        </div>
-                        <div class="middle" @click="$router.push('/saleDetail/'+item.OrderNumber)">
-                            <img :src="item.Product.ImagePath" alt="">
-                            <p>
-                                {{item.Product.Name}}
-                            </p>
-                            <div>
-                                <span>￥ {{item.Product.Price}}</span> <br>
-                                <b>× {{item.Count}}</b>
-                            </div>
-                        </div>
-                        <div class="bottom">
-                            <div>
-                                {{item.CreateTime.split(' ')[0]}}
-                            </div>
-                            <div>
-                                共{{item.Count}}件&nbsp;&nbsp;合计: <b>￥{{item.TotalMoney}}</b>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </van-tab>
-            <van-tab  title="待付款 ">
-                <ul class="list">
-                    <li v-for="(item,index) in orderList.waitPay" :key="index">
-                        <div class="top">
-                        <span>
-                            {{item.CreateTime}}
-                        </span>
-                            <p>
-                                <b>待付款</b>
-                                <!--<van-icon name="delete"></van-icon>-->
-                            </p>
-                        </div>
-                        <div class="middle" @click="$router.push('/saleDetail/'+item.OrderNumber)">
-                            <img :src="item.Product.ImagePath" alt="">
-                            <p>
-                                {{item.Product.Name}}
-                            </p>
-                            <div>
-                                <span>￥ {{item.Product.Price}}</span> <br>
-                                <b>× {{item.Count}}</b>
-                            </div>
-                        </div>
-                        <div class="bottom">
-                            <div>
-                                {{item.CreateTime.split(' ')[0]}}
-                            </div>
-                            <div>
-                                共{{item.Count}}件&nbsp;&nbsp;合计: <b>￥{{item.TotalMoney}}</b>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </van-tab>
-            <van-tab  title="待收货 ">
-                <ul class="list">
-                    <li v-for="(item,index) in orderList.waitHarvest" :key="index">
-                        <div class="top">
-                        <span>
-                            {{item.CreateTime}}
-                        </span>
-                            <p>
-                                <b>待收货</b>
-                                <!--<van-icon name="delete"></van-icon>-->
-                            </p>
-                        </div>
-                        <div class="middle" @click="$router.push('/saleDetail/'+item.OrderNumber)">
-                            <img :src="item.Product.ImagePath" alt="">
-                            <p>
-                                {{item.Product.Name}}
-                            </p>
-                            <div>
-                                <span>￥ {{item.Product.Price}}</span> <br>
-                                <b>× {{item.Count}}</b>
-                            </div>
-                        </div>
-                        <div class="bottom">
-                            <div>
-                                {{item.CreateTime.split(' ')[0]}}
-                            </div>
-                            <div>
-                                共{{item.Count}}件&nbsp;&nbsp;合计: <b>￥{{item.TotalMoney}}</b>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </van-tab>
-            <van-tab  title="已完成 ">
-                <ul class="list">
-                    <li v-for="(item,index) in orderList.waitHarvest" :key="index">
-                        <div class="top">
-                        <span>
-                            {{item.CreateTime}}
-                        </span>
-                            <p>
-                                <b>已完成</b>
-                                <van-icon name="delete" @click="deletClick(item.OrderNumber)"></van-icon>
-                            </p>
-                        </div>
-                        <div class="middle" @click="$router.push('/saleDetail/'+item.OrderNumber)">
-                            <img :src="item.Product.ImagePath" alt="">
-                            <p>
-                                {{item.Product.Name}}
-                            </p>
-                            <div>
-                                <span>￥ {{item.Product.Price}}</span> <br>
-                                <b>× {{item.Count}}</b>
-                            </div>
-                        </div>
-                        <div class="bottom">
-                            <div>
-                                {{item.CreateTime.split(' ')[0]}}
-                            </div>
-                            <div>
-                                共{{item.Count}}件&nbsp;&nbsp;合计: <b>￥{{item.TotalMoney}}</b>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </van-tab>
-        </van-tabs>
+    <div class="sale_box">
+        <div class="sale_top">
+            <p>{{num}}</p>
+            <span>预估收益</span>
+        </div>
+        <p class="time_select" @click="timeShow=true">
+            {{currentDate.getFullYear()+'年'+(currentDate.getMonth()+1)+'月'}} <van-icon name="arrow-down" />
+        </p>
+        <ul>
+            <li v-for="(item,index) in list" :key="index">
+                <p><img :src="item.ImagePath" alt=""></p>
+                <div>
+                    <p>{{item.NickName}}</p>
+                    <span>{{item.Remark}}</span>
+                </div>
+                <div>
+                    <span>+{{item.Money}}</span>
+                    <p>{{item.CreateTime.split('-')[1]+'月'+item.CreateTime.split('-')[2]}}</p>
+                </div>
+            </li>
+        </ul>
+        <van-popup v-model="timeShow" position="bottom" :overlay="true">
+            <van-datetime-picker
+                    v-model="currentDate"
+                    type="year-month"
+                    @confirm="changeTime"
+                    @cancel="timeShow=false"
+                    :formatter="formatter"
+            />
+        </van-popup>
     </div>
 </template>
 
 <script>
-    /* 1 待付款
-    *  2 已付款
-    *  3 待收货
-    *  4 已取消
-    *  5 已完成
-    *  6 支付失败
-    *  7 售后中
-    *  8 删除
-    * */
-    import {getSaleList} from '@/api/order'
+    import {getSaleList} from '@/api/sale'
     import {mapGetters} from 'vuex'
     export default {
-        name: "order",
+        name: "index",
         data(){
             return {
-                active:0,
-                orderList:{
-                    all:[],
-                    waitPay:[],
-                    waitHarvest:[],
-                    finish:[],
-                }
+                currentDate: new Date(),
+                timeShow:false,
+                list:[],
+                num:0
             }
         },
         created(){
-            this.fetchData();
+            this.num=this.$route.params.num;
+            console.log(this.num)
+            this.init();
         },
         computed:{
             ...mapGetters([
                 'userId'
             ])
         },
-        methods:{
-            //获取订单列表
-            fetchData(){
-                getSaleList({userId:this.userId}).then(res=>{
+        methods: {
+            init(){
+                getSaleList({
+                    userId:this.userId,
+                    incomeType:6,
+                    startTime:this.currentDate.getFullYear()+'/'+(this.currentDate.getMonth()+1)+'/1',
+                    endTime:''+this.currentDate.getFullYear()+'/'+(this.currentDate.getMonth()+1)+'/'+new Date(this.currentDate.getFullYear(),this.currentDate.getMonth()+1,0).getDate()
+                }).then(res=>{
                     if(res.Success){
-                        let data=res.Data;
-                        this.orderList.all=data;
-                        for(let i=0;i<data.length;i++){
-                            if(data[i].OrderState=='waitPay'){
-                                this.orderList.waitPay.push(data[i])
-                            }
-                            else if(data[i].OrderState=='waitHarvest'){
-                                this.orderList.waitHarvest.push(data[i])
-                            }
-                            else if(data[i].OrderState=='finish'){
-                                this.orderList.finish.push(data[i])
-                            }
-                        }
+                        this.list=res.Data;
                     }
                 })
-            }
+            },
+            formatter(type, value) {
+                if (type === 'year') {
+                    return `${value}年`;
+                } else if (type === 'month') {
+                    return `${value}月`
+                }
+                return value;
+            },
+            changeTime(){
+                this.timeShow=false;
+                this.init();
+            },
         }
     }
 </script>
 
 <style scoped>
-    .order_box{
+    .sale_box{
+
 
     }
-    .order_box .list{
-        background:#F3F4F6;
-        border-top:1px solid transparent;
-    }
-    .order_box .list li{
-        background: #fff;
-        padding:0  16px;
-        font-size:14px;
-        margin-top:8px;
-        border-bottom:8px solid #F3F4F6;
-    }
-    .order_box .list li .top{
-        display: flex;
-        justify-content: space-between;
-        height:42px;
-        border-bottom:1px solid #E7E7E7;
-        align-items: center;
-    }
-    .order_box .list li .top b{
-        color:#FF7EA3;
-        padding-right:5px;
-    }
-    .order_box .list li .top  i{
-        padding-left:5px;
-        display: inline-block;
-        vertical-align: middle;
-        border-left:1px solid #ddd;
-    }
-    .order_box .list li .middle{
-        display: flex;
-        padding:10px 0;
-        border-bottom:1px solid #E7E7E7;
-    }
-    .order_box .list li .middle img{
-        width:72px;
-        height:72px;
-    }
-    .order_box .list li .middle>p{
-        width:63%;
-        margin-left:10px;
-    }
-    .order_box .list li .middle>div{
-        text-align: right;
-        width:15%;
-    }
-    .order_box .list li .bottom{
-        padding:10px 0;
-        text-align: right;
-        display: flex;
-        justify-content: space-between;
-    }
-    .order_box .list li .bottom b{
-        color:#FF7EA3;
-    }
-    .order_box .list li .bottom>div span{
-        color:#999999;
-        margin-left:3px;
-    }
-    .order_box .list li .bottom>div{
-        padding:8px 0;
-    }
-    .order_box .list li .bottom button{
-        height:25px;
+    .sale_top{
+        padding:30px;
+        font-size:18px;
+        color:#fff;
+        background:#515154;
+        line-height:35px;
         text-align:center;
-        border:1px solid #A6A6A6;
-        background:#fff;
-        border-radius:3px;
-        font-size:12px;
-        margin-left:20px;
     }
-    .order_box .list li .bottom button.danger{
-        background:#ff7ea3;
-        color:#fff;
-        border-color:#ff7ea3;
+    .time_select{
+        font-size:14px;
+        text-align:left;
+        line-height:35px;
+        padding-left:16px;
     }
-    .order_box .list li .bottom button.enter{
-        background:#FF7EA3;
-        color:#fff;
-        border:0;
+    .sale_box ul{
+        font-size:14px;
+    }
+    .sale_box li{
+        display: flex;
+        padding:16px 16px;
+        border-bottom:1px solid #f7f7f7;
+    }
+    .sale_box li img{
+        width:100%;
+    }
+    .sale_box li>div:first-of-type{
+        width:45%;
+    }
+    .sale_box li>div:last-of-type{
+        text-align:center;
+    }
+    .sale_box li>div:last-of-type span{
+        color:#ff5044;
+    }
+    .sale_box li>p{
+        width:40px;
+        overflow: hidden;
+        height:40px;
+        border-radius:50%;
+        border:1px solid #f1f1f1;
+        margin-right:16px;
     }
 </style>

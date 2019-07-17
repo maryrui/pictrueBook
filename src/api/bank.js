@@ -28,3 +28,31 @@ export function getBankInfo(query){
         params:query
     })
 }
+
+
+//提现到零钱
+export function getDeposit(query){
+    return request ({
+        url:"/api/DrawMoneyApi/WxPayToChange",
+        method:"get",
+        params:query
+    })
+}
+
+//提现到银行卡
+export function getDepositBank(data){
+    return request ({
+        url:"/api/DrawMoneyApi/DrawMoneyToBank",
+        method: 'post',
+        data
+    })
+}
+
+//发送验证码
+export function setCodeSms(query){
+    return request ({
+        url:"/api/SmsApi/SmsCodeSend",
+        method:"get",
+        params:query
+    })
+}

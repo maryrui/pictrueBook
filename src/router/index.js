@@ -22,6 +22,14 @@ export default new Router({
           }
       },
       {
+          path:'/demo',
+          name:'demo',
+          component: _import('index/demo'),
+          meta:{
+              title:'demo'
+          }
+      },
+      {
           path:'/user',
           name:'user',
           component: _import('user/index'),
@@ -191,6 +199,14 @@ export default new Router({
           }
       },
       {
+          path:'/checkList/:id',
+          name:'checkList',
+          component: _import('check/list'),
+          meta:{
+              title:'提现列表'
+          }
+      },
+      {
           path:'/bank',
           name:'bank',
           component: _import('bank/index'),
@@ -199,7 +215,23 @@ export default new Router({
           }
       },
       {
-          path:'/bankAdd',
+          path:'/bankCode/:phone/:type',
+          name:'bankCode',
+          component: _import('bank/phoneCodeSms'),
+          meta:{
+              title:'添加银行卡-验证码'
+          }
+      },
+      {
+          path:'/setPass',
+          name:'setPass',
+          component: _import('bank/setPass'),
+          meta:{
+              title:'设置提现密码'
+          }
+      },
+      {
+          path:'/bankAdd/:type',
           name:'bankAdd',
           component: _import('bank/add'),
           meta:{
@@ -207,11 +239,19 @@ export default new Router({
           }
       },
       {
-          path:'/bankExtract/:id',
+          path:'/bankSuccess',
+          name:'bankSuccess',
+          component: _import('bank/success'),
+          meta:{
+              title:'提现提示'
+          }
+      },
+      {
+          path:'/bankExtract',
           name:'bankExtract',
           component: _import('bank/extract'),
           meta:{
-              title:'银行卡提现'
+              title:'提现'
           }
       },
       {
@@ -223,7 +263,7 @@ export default new Router({
           }
       },
       {
-          path:'/sale',
+          path:'/sale/:num',
           name:'sale',
           component: _import('sale/index'),
           meta:{
@@ -236,6 +276,38 @@ export default new Router({
           component: _import('sale/detail'),
           meta:{
               title:'销售订单详情'
+          }
+      },
+      {
+          path:'/team',
+          name:'team',
+          component: _import('team/index'),
+          meta:{
+              title:'我的团队'
+          }
+      },
+      {
+          path:'/findPass',
+          name:'findPass',
+          component: _import('setPass/index'),
+          meta:{
+              title:'忘记密码-选择银行卡'
+          }
+      },
+      {
+          path:'/validateBankInfo/:num/:id',
+          name:'validateBankInfo',
+          component: _import('setPass/validateBankInfo'),
+          meta:{
+              title:'忘记密码-选择银行卡'
+          }
+      },
+      {
+          path:'/passCode/:phone/:type',
+          name:'passCode',
+          component: _import('setPass/passCode'),
+          meta:{
+              title:'忘记密码-验证码'
           }
       },
       {

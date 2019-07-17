@@ -9,10 +9,10 @@
             <p>{{detail.Address}}</p>
         </div>
         <div class="detail_goods">
-            <img :src="detail.Product ? detail.Product.ImagePath : ''" alt="">
-            <h3>{{detail.Product ? detail.Product.Name : ''}}</h3>
+            <img :src="detail ? detail.ImagePath : ''" alt="">
+            <h3>{{detail ? detail.ProductName : ''}}</h3>
             <p>
-                <b>￥{{detail.Product.Price}}</b> <br>
+                <b>￥{{detail.Price}}</b> <br>
                  <span>✖{{detail.Count}}</span>
             </p>
         </div>
@@ -249,6 +249,7 @@
         padding:16px;
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
     .detail_goods img{
         width:64px;
@@ -288,7 +289,7 @@
         color:#333;
     }
     .detail_money>p:first-child span{
-        color:#FF7EA3;
+        color:#ff5044;
         font-weight:700;
     }
     .footer{
@@ -314,9 +315,9 @@
         cursor:pointer;
     }
     .footer .danger{
-        background:#FF7EA3;
+        background:#ff5044;
         color:#fff;
-        border-color:#FF7EA3;
+        border-color:#ff5044;
     }
     .popup_box{
         width:100%;
@@ -343,7 +344,7 @@
         font-size:14px;
     }
     .popup_box>p span{
-        color:#FF7EA3;
+        color:#ff5044;
     }
     .popup_box>div{
         display: flex;
@@ -368,6 +369,6 @@
     .popup_box>div i{
         font-size:24px;
         line-height:34px;
-        /*background:#FF7EA3;*/
+        /*background:#ff5044;*/
     }
 </style>

@@ -74,7 +74,7 @@
         },
         methods:{
             getAddresslist(){
-                getAddressList({'userId':localStorage.getItem('userId')}).then(res=>{
+                getAddressList({'userId':sessionStorage.getItem('userId')}).then(res=>{
                     if(res.Success){
                         this.address=res.Data;
                     }
@@ -101,7 +101,12 @@
                     "Name":this.address[this.addressIndex].Name,
                     "Phone":this.address[this.addressIndex].Phone,
                     "PayType": "wx",
-                    "Remark": this.remark
+                    "Remark": this.remark,
+                    'ConsumptionType':"1",
+                    'TableName':"2",
+                    'Integral':0,
+                    'source':1,
+                    'Spbill_create_ip':'119.23.43.228'
                 }
                 submitOrder(data).then(res=>{
                     if(res.Success){
@@ -127,7 +132,7 @@
                     "package":data.package,
                     "signType":"MD5",         //微信签名方式：
                     "paySign":data.sign //微信签名
-            },
+                },
             function(res){
                 if(res.err_msg == "get_brand_wcpay_request:ok" ){
                     // 使用以上方式判断前端返回,微信团队郑重提示：
@@ -232,6 +237,7 @@
         position:fixed;
         bottom:0;
         left:0;
+        background:#fff;
         width:100%;
         height:49px;
         display: flex;
@@ -244,7 +250,7 @@
         width:115px;
         height:100%;
         color:#fff;
-        background:#FF7EA3;
+        background:#ff5044;
         border:0;
         font-size:14px;
     }
@@ -253,7 +259,7 @@
         font-size:14px;
     }
     .footer>p  span{
-        color:#FF7EA3;
+        color:#ff5044;
     }
     .popup_box{
         width:100%;
@@ -279,7 +285,7 @@
         font-size:14px;
     }
     .popup_box>p span{
-        color:#FF7EA3;
+        color:#ff5044;
     }
     .popup_box>div{
         display: flex;

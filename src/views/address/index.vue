@@ -38,21 +38,23 @@
                 getAddressList({'userId':this.userId}).then(res=>{
                     if(res.Success){
                         let data=res.Data;
-                        if(this.$route.params.id>1){
-                            this.chosenAddressId=''+this.$route.params.id;
-                        }else{
-                            this.chosenAddressId= ''+res.Data[0].Id;
+                        if(data.length>0){
+                            if(this.$route.params.id>1){
+                                this.chosenAddressId=''+this.$route.params.id;
+                            }else{
+                                this.chosenAddressId= ''+res.Data[0].Id;
+                            }
+                            data.forEach((item)=>{
+                                this.list.push(
+                                    {
+                                        id: item.Id+'',
+                                        name: item.Name,
+                                        tel: item.Phone,
+                                        address:item.AreaStr+item.DetailAddress
+                                    }
+                                )
+                            })
                         }
-                        data.forEach((item)=>{
-                            this.list.push(
-                                {
-                                    id: item.Id+'',
-                                    name: item.Name,
-                                    tel: item.Phone,
-                                    address:item.AreaStr+item.DetailAddress
-                                }
-                            )
-                        })
                     }
                 })
             },
@@ -73,7 +75,7 @@
 
 <style>
     .address_box button{
-        background:#FF7EA3;
+        background:#ff5044;
         border:0;
     }
 </style>

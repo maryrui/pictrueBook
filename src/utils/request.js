@@ -14,8 +14,9 @@ service.interceptors.request.use(config=>{
         mask: true,
         message: '加载中...'
     })
+
     if(store.getters.token){
-        config.headers['Authorization']=localStorage.getItem('token')
+        config.headers['Authorization']=sessionStorage.getItem('token')
     }
     return config
 },error=>{
@@ -27,7 +28,11 @@ service.interceptors.response.use(
         response=> {
             Toast.clear();
             if(!response.data.Success){
+                if(response.data.Msg.code=='1004'){
+                    return response.data
+                }
                 alert(response.data.Msg.message);
+
             }else if(response.data.Msg.code=='403'){
                 alert(response.data.Msg.message);
             }

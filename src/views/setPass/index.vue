@@ -1,5 +1,5 @@
 <template>
-    <bank-list :isFind="false"></bank-list>
+    <bank-list :isFind="true"></bank-list>
 </template>
 
 <script>
@@ -23,4 +23,5 @@
 </script>
 
 <style scoped>
+
 </style>

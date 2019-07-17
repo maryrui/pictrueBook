@@ -141,7 +141,7 @@
         text-align: right;
     }
     .order_box .list li .bottom b{
-        color:#FF7EA3;
+        color:#ff5044;
     }
     .order_box .list li .bottom>div span{
         color:#999999;

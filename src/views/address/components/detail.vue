@@ -112,7 +112,7 @@
         background:#F3F4F6;
     }
     .detail_box .van-address-edit__buttons button.van-button{
-        background:#FF7EA3;
+        background:#07c160;
         border:0;
     }
     .detail_box .van-address-edit__buttons button.van-button:last-child{
