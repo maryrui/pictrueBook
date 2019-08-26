@@ -94,9 +94,10 @@
     }
     .content{
         margin-top:15px;
-        font-size:14px;
+        font-size:12px;
     }
     .content h3{
-        font-weight:500;
+        font-weight:700;
+        font-size:12px;
     }
 </style>

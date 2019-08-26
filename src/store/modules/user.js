@@ -2,7 +2,7 @@ import {getProductDetail} from '@/api/index'
 import {getUserInfo} from '@/api/user'
 const user={
     state:{
-        goodsId:1001,
+        goodsId:1002,
         token:sessionStorage.getItem('token'),
         userId:sessionStorage.getItem('userId'),
         goods:null,

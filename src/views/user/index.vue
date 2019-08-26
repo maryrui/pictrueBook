@@ -2,23 +2,24 @@
     <div class="home">
         <div class="hom_top">
             <div class="user_pic">
-                <div @click="$router.push('/self')">
+                <div  @click="$router.push('/self')">
                     <p><img :src="userInfo ? userInfo.ImagePath : ''" alt=""></p>
                     <div>
-                        <h2>{{userInfo ? userInfo.Name : ''}}</h2>
-                        <span>{{userInfo ? userInfo.UserGrade : ''}}</span>
+                        <h2 class="van-ellipsis">{{userInfo ? userInfo.Name : ''}}</h2>
+                        <span>{{userInfo ? userInfo.IntegralGrade : ''}}</span>
                     </div>
                 </div>
-                <button @click="$router.push('/bankExtract')">申请提现</button>
+                <button @click="$router.push('/bankExtract')" v-if="userInfo.AiReaderLevel=='C'||userInfo.AiReaderLevel=='D'||userInfo.AiReaderLevel=='E'">申请提现</button>
+                <van-icon name="arrow" v-else></van-icon>
             </div>
             <div class="user_detail">
                 <div @click="$router.push('/sale/'+userInfo.EstimateIncome )">
-                    <h3>{{userInfo ? userInfo.EstimateIncome : 0}}</h3>
-                    <span>预估收益</span>
+                    <p>{{userInfo ? userInfo.EstimateIntegral : 0}}</p>
+                    <span>预估积分</span>
                 </div>
-                <div>
-                    <h3>{{userInfo ? userInfo.Income : ''}}</h3>
-                    <span>可提现收益</span>
+                <div @click="$router.push('/deposit')">
+                    <p>{{userInfo ? userInfo.Integral : ''}}</p>
+                    <span>可用积分</span>
                 </div>
             </div>
         </div>
@@ -36,11 +37,17 @@
                 </div>
                 <div @click="$router.push('/order/'+2)">
                     <p>
+                        <img src="../../../static/images/waitSet.png" alt="">
+                    </p>
+                    <span>待发货</span>
+                </div>
+                <div @click="$router.push('/order/'+3)">
+                    <p>
                         <img src="../../../static/images/putGoods.png" alt="">
                     </p>
                     <span>待收货</span>
                 </div>
-                <div @click="$router.push('/order/'+3)">
+                <div @click="$router.push('/order/'+4)">
                     <p>
                         <img src="../../../static/images/finish.png" alt="">
                     </p>
@@ -54,7 +61,7 @@
                 </div>
             </div>
             <ul class="">
-                <li @click="$router.push('/bank')">
+                <li @click="$router.push('/bank')" v-if="userInfo.AiReaderLevel=='C'||userInfo.AiReaderLevel=='D'||userInfo.AiReaderLevel=='E'">
                     <span>我的银行卡</span>
                     <van-icon name="arrow"></van-icon>
                 </li>
@@ -70,7 +77,7 @@
                     <span>我的团队</span>
                     <van-icon name="arrow"></van-icon>
                 </li>
-                <li @click="$router.push('/generalize')" v-if="userInfo ? userInfo.IsAgent : ''">
+                <li @click="$router.push('/generalize')" v-if="userInfo ? userInfo.IsIntegralAgent : ''">
                     <span>推广二维码</span>
                     <van-icon name="arrow"></van-icon>
                 </li>
@@ -144,7 +151,7 @@
         font-size:20px;
     }
     .user_pic>div{
-        width:65%;
+        width:75%;
         font-size:16px;
     }
     .user_pic img{
@@ -155,15 +162,21 @@
         overflow:hidden;
     }
     .user_pic h2{
-        font-size:23px;
+        font-size:16px;
+        line-height:35px;
+
+    }
+    .user_pic h2+span{
+        font-size:14px;
     }
     .user_detail{
-        margin-top:25px;
+        margin-top:20px;
         display: flex;
         justify-content:space-between;
-    }
-    .user_detail h3{
         font-size:20px;
+    }
+    .user_detail{
+
     }
     .user_detail>div{
         text-align:center;

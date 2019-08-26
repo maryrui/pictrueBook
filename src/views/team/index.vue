@@ -3,7 +3,7 @@
         <van-tabs v-model="active" @click="fetchData">
             <van-tab title="一级">
                 <ul>
-                    <li v-for="(item,index) in list" :key="index">
+                    <li v-for="(item,index) in list.OneLevel" :key="index">
                         <div>
                             <p><img :src="item.ImagePath" alt=""></p>
                             <div>
@@ -17,14 +17,13 @@
             </van-tab>
             <van-tab title="二级">
                 <ul>
-                    <li v-for="(item,index) in list" :key="index">
+                    <li v-for="(item,index) in list.SecondLevel" :key="index">
                         <div>
                             <p><img :src="item.ImagePath" alt=""></p>
                             <div>
                                 <span>{{item.NickName}}</span>
                                 <p>{{item.CreateTime}}</p>
                             </div>
-                            <!--<i>{{item.Count}}</i>-->
                         </div>
                     </li>
                 </ul>

@@ -100,7 +100,8 @@
                     "Gender": this.user.Gender
                 }).then(res=>{
                     if(res.Success){
-                        sessionStorage.removeItem('name')
+                        sessionStorage.removeItem('name');
+                        this.$store.dispatch('GetUserInfo');
                         this.$router.push('/user')
                     }
                 })

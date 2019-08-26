@@ -5,6 +5,9 @@ const _import = require ('./_import_'+process.env.NODE_ENV);
 Vue.use(Router)
 
 export default new Router({
+    scrollBehavior: () => ({
+        y: 0
+    }),
   routes: [
       {
           path: '/',
@@ -67,7 +70,7 @@ export default new Router({
           name:'generalize',
           component: _import('generalize/index'),
           meta:{
-              title:'推广'
+              title:'AI亲子伴读'
           }
       },
       {
@@ -308,6 +311,47 @@ export default new Router({
           component: _import('setPass/passCode'),
           meta:{
               title:'忘记密码-验证码'
+          }
+      },
+      {
+          path:'/pictrue',
+          name:'pictrue',
+          component: _import('pictrue/index'),
+          meta:{
+              title:'积分商场',
+              showTab:true
+          }
+      },
+      {
+          path:'/pictrueDetail/:id',
+          name:'pictrueDetail',
+          component: _import('pictrue/detail'),
+          meta:{
+              title:'绘本详情',
+          }
+      },
+      {
+          path:'/pictrueList/:id/:age/:type',
+          name:'pictrueList',
+          component: _import('pictrue/list'),
+          meta:{
+              title:'绘本列表'
+          }
+      },
+      {
+          path:'/exchangeOrder/:id',
+          name:'exchangeOrder',
+          component: _import('pictrue/exchangeOrder'),
+          meta:{
+              title:'绘本兑换'
+          }
+      },
+      {
+          path:'/deposit',
+          name:'deposit',
+          component: _import('deposit/index'),
+          meta:{
+              title:'积分详情'
           }
       },
       {

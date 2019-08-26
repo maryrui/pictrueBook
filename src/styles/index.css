@@ -8,3 +8,10 @@ body{
     color:#333;
     font-family:'PingFang-SC-Bold';
 }
+.gem{
+    display: inline-block;
+    width:18px;
+    height:18px;
+    background: url('../../static/images/integral.png') no-repeat;
+    background-size:100%;
+}

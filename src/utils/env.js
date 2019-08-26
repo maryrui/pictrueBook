@@ -15,10 +15,11 @@ let imgBaseUrl = 'http://images.cangdu.org/';
 if (process.env.NODE_ENV == 'development') {
         baseUrl="http://release.aiteyou.net";
     // baseUrl="http://192.168.0.134";
+    // baseUrl="http://interface.aiteyou.net";
 }else if(process.env.NODE_ENV == 'production'){
 
-    baseUrl = 'http://release.aiteyou.net';
-    // baseUrl="http://interface.aiteyou.net";
+    // baseUrl = 'http://release.aiteyou.net';
+    baseUrl="http://interface.aiteyou.net";
 }
 
 export {

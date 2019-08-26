@@ -75,7 +75,7 @@ export function regUser(query){
 //获取推广二维码
 export function getGeneralize(query){
     return request({
-        url:'/api/UserApi/GetUserQR',
+        url:'api/UserApi/GetAiReadQR',
         method: 'get',
         params: query
     })
@@ -87,5 +87,14 @@ export function findPassValidateBank(data){
         url:'/api/UserApi/ForgetDrawMoneyPassword',
         method: 'post',
         data
+    })
+}
+
+//微信分享配置信息
+export function getWXInfoDetail (query){
+    return request({
+        url:'/api/BookExchangeAPi/ShareAIReader',
+        method: 'get',
+        params: query
     })
 }

@@ -1,9 +1,9 @@
 <template>
     <div class="order_box">
-        <van-tabs v-model="active" swipeable animated sticky @click="tabClick">
+        <van-tabs v-model="active" swipeable animated sticky @click="tabClick" :swipe-threshold="5">
             <van-tab  title="全部 ">
                 <ul class="list">
-                    <li v-for="(item,index) in orderList.all" :key="item.OrderNumber">
+                    <li v-for="(item,index) in orderList.all" :key="index">
                         <div class="top">
                             <span>
                                 {{item.CreateTime}}
@@ -19,30 +19,30 @@
                                {{item ? item.ProductName : ''}}
                             </p>
                             <div>
-                                <span>￥ {{item ? item.Price : 0.00}}</span> <br>
+                                <span>{{item.TableName==4 ? '积分'+item.Integral : '￥'+item.Price}}</span> <br>
                                 <b>× {{item.Count}}</b>
                             </div>
                         </div>
                         <div class="bottom">
                             <div>
-                                共{{item.Count}}件&nbsp;&nbsp;合计: <b>￥{{item.TotalMoney}}</b>
+                                <span v-show="parseInt(userId)!=parseInt(item.UserId)">{{item.NikeName}}</span><p>共{{item.Count}}件&nbsp;&nbsp;合计: <b>{{item.TotalMoney}} {{item.TableName==4 ? '(积分)' : '￥'}}</b></p>
                             </div>
                             <p v-if="item.OrderState=='finish'">
-                                <button @click="buyAgain">再次购买</button>
+                                <!--<button @click="buyAgain">再次购买</button>-->
                                 <button @click="showExpress(item.OrderShipment.LogisticCode,item.OrderShipment.ShipperCode,item.OrderNumber)" v-show="item.OrderShipment">查看物流</button>
                             </p>
-                            <p v-if="item.OrderState=='alreadyCancel'">
+                            <!--<p v-if="item.OrderState=='alreadyCancel'">
                                 <button @click="buyAgain">再次购买</button>
-                            </p>
-                            <p v-if="item.OrderState=='waitPay'">
+                            </p>-->
+                            <p v-if="item.OrderState=='waitPay'&& parseInt(userId)==parseInt(item.UserId)">
                                 <button @click="resetAddress(item.OrderNumber)">修改地址</button>
                                 <button @click="cancelOrder(item.OrderNumber,index)">取消订单</button>
                                 <button @click="nowPay(index)" class="danger">立即付款</button>
                             </p>
                             <p v-if="item.OrderState=='waitHarvest'">
-                                <button @click="afterService(item.OrderNumber)">退款/售后</button>
+                                <button @click="afterService(item.OrderNumber)" v-show="parseInt(userId)==parseInt(item.UserId)">退款/售后</button>
                                 <button @click="showExpress(item.OrderShipment.LogisticCode,item.OrderShipment.ShipperCode,item.OrderNumber)" v-show="item.OrderShipment">查看物流</button>
-                                <button @click="receipt(item.OrderNumber,index)" class="danger">确认收货</button>
+                                <button @click="receipt(item.OrderNumber,index)" class="danger" v-show="parseInt(userId)==parseInt(item.UserId)">确认收货</button>
                             </p>
                         </div>
                     </li>
@@ -72,12 +72,46 @@
                         </div>
                         <div class="bottom">
                             <div>
-                                共{{item.Count}}件&nbsp;&nbsp;合计: <b>￥{{item.TotalMoney}}</b>
+                                <span v-show="parseInt(userId)!=parseInt(item.UserId)">{{item.NikeName}}</span><p>共{{item.Count}}件&nbsp;&nbsp;合计: <b>{{item.TotalMoney}} {{item.TableName==4 ? '(积分)' : '￥'}}</b></p>
                             </div>
-                            <p>
+                            <p v-show="parseInt(userId)==parseInt(item.UserId)">
                                 <button @click="resetAddress(item.OrderNumber)">修改地址</button>
                                 <button @click="cancelOrder(item.OrderNumber,index)">取消订单</button>
                                 <button @click="nowPay(index)" class="danger">立即付款</button>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </van-tab>
+            <van-tab  title="待发货 ">
+                <ul class="list">
+                    <li v-for="(item,index) in orderList.waitSetGoods" :key="index">
+                        <div class="top">
+                        <span>
+                            {{item.CreateTime}}
+                        </span>
+                            <p>
+                                <b>待发货</b>
+                                <!--<van-icon name="delete"></van-icon>-->
+                            </p>
+                        </div>
+                        <div class="middle" @click="$router.push('/orderDetail/'+item.OrderNumber)">
+                            <img :src="item ? item.ImagePath : ''" alt="">
+                            <p>
+                                {{item ? item.ProductName : ''}}
+                            </p>
+                            <div>
+                                <span>{{item.TableName==4 ? '积分'+item.Integral : '￥'+item.Price}}</span> <br>
+                                <b>× {{item.Count}}</b>
+                            </div>
+                        </div>
+                        <div class="bottom">
+                            <div>
+                                <span v-show="parseInt(userId)!=parseInt(item.UserId)">{{item.NikeName}}</span><p>共{{item.Count}}件&nbsp;&nbsp;合计: <b>{{item.TotalMoney}} {{item.TableName==4 ? '(积分)' : '￥'}}</b></p>
+                            </div>
+                            <p v-show="parseInt(userId)==parseInt(item.UserId)">
+                                <button @click="resetAddress(item.OrderNumber)">修改地址</button>
+                                <button @click="cancelOrder(item.OrderNumber,index)">取消订单</button>
                             </p>
                         </div>
                     </li>
@@ -101,18 +135,18 @@
                                 {{item ? item.ProductName : ''}}
                             </p>
                             <div>
-                                <span>￥ {{item ? item.Price : 0.00}}</span> <br>
+                                <span>{{item.TableName==4 ? '积分'+item.Integral : '￥'+item.Price}}</span> <br>
                                 <b>× {{item.Count}}</b>
                             </div>
                         </div>
                         <div class="bottom">
                             <div>
-                                共{{item.Count}}件&nbsp;&nbsp;合计: <b>￥{{item.TotalMoney}}</b>
+                                <span v-show="parseInt(userId)!=parseInt(item.UserId)">{{item.NikeName}}</span><p>共{{item.Count}}件&nbsp;&nbsp;合计: <b>{{item.TotalMoney}} {{item.TableName==4 ? '(积分)' : '￥'}}</b></p>
                             </div>
                             <p>
-                                <button @click="afterService(item.OrderNumber)">退款/售后</button>
+                                <button @click="afterService(item.OrderNumber)" v-show="parseInt(userId)==parseInt(item.UserId)">退款/售后</button>
                                 <button @click="showExpress(item.OrderShipment.LogisticCode,item.OrderShipment.ShipperCode,item.OrderNumber)" v-if="item.OrderShipment">查看物流</button>
-                                <button @click="receipt(item.OrderNumber,index)" class="danger">确认收货</button>
+                                <button @click="receipt(item.OrderNumber,index)" class="danger" v-show="parseInt(userId)==parseInt(item.UserId)">确认收货</button>
                             </p>
                         </div>
                     </li>
@@ -136,16 +170,16 @@
                                 {{item ? item.ProductName : ''}}
                             </p>
                             <div>
-                                <span>￥ {{item ? item.Price : 0.00}}</span> <br>
+                                <span>{{item.TableName==4 ? '积分'+item.Integral : '￥'+item.Price}}</span> <br>
                                 <b>× {{item.Count}}</b>
                             </div>
                         </div>
                         <div class="bottom">
                             <div>
-                                共{{item.Count}}件&nbsp;&nbsp;合计: <b>￥{{item.TotalMoney}}</b>
+                                <span v-show="parseInt(userId)!=parseInt(item.UserId)">{{item.NikeName}}</span><p>共{{item.Count}}件&nbsp;&nbsp;合计: <b>{{item.TotalMoney}} {{item.TableName==4 ? '(积分)' : '￥'}}</b></p>
                             </div>
                             <p>
-                                <button @click="buyAgain">再次购买</button>
+                                <!--<button @click="buyAgain">再次购买</button>-->
                                 <button @click="showExpress(item.OrderShipment.LogisticCode,item.OrderShipment.ShipperCode,item.OrderNumber)" v-if="item.OrderShipment">查看物流</button>
                             </p>
                         </div>
@@ -193,15 +227,20 @@
                 active:0,
                 cancelShow:false,
                 currentIndex:0,
+                pagesize:20,
+                total:"",
                 payDetail:{
                     price:0,
                     count:1,
                     code:""
                 },
+                currentNum:[0,0,0,0,0],
+                isFetchData:[1,1,1,1,1],
                 show:false,
                 currentCode:"",
                 columns:['收货信息有误','商品数量或款式需要调整','有更优惠的购买方案','商品缺货','不想买了','其它原因'],
                 orderList:{
+                    waitSetGoods:[],
                     all:[],
                     waitPay:[],
                     waitHarvest:[],
@@ -211,47 +250,63 @@
         },
         created(){
             this.active=parseInt(this.$route.params.id)
-            this.fetchData({userId:this.userId,stateModel:this.orderState});
+            this.fetchData();
+        },
+        mounted(){
+            window.addEventListener('scroll',this.handleScroll)
         },
         computed:{
             ...mapGetters([
                 'userId'
             ]),
             orderState(){
-                if(this.active<2){
-                    return this.active
-                }else if(this.active<3){
-                    return 3
-                }else if(this.active<4){
+               if(this.active===4){
                     return 5
                 }else{
-                    return 0
+                    return this.active
                 }
             }
         },
         methods:{
             //获取订单列表
-            fetchData(data){
-                this.orderList={
-                    all:[],
-                    waitPay:[],
-                    waitHarvest:[],
-                    finish:[],
-                };
-                getOrderList(data).then(res=>{
+            fetchData(){
+                getOrderList({
+                    userId:this.userId,
+                    stateModel:this.orderState,
+                    pagesize:this.pagesize,
+                    pageindex:this.currentNum[this.active]
+                }).then(res=>{
                     if(res.Success){
                         let data=res.Data;
-                        console.log(this.active);
-                        if(this.active==0){
-                            this.orderList.all=data;
-                        }else if(this.active==1){
-                            this.orderList.waitPay=data;
-                        }else if(this.active==2){
-                            this.orderList.waitHarvest=data;
-                        }else{
-                            this.orderList.finish=data;
+                        if(data.length<1){
+                            return ;
                         }
-                        console.log(this.orderList);
+                        if(data.length < this.pagesize){ this.isFetchData[this.active]=0}
+                        else{ this.currentNum[this.active]++};
+
+                        if(this.active==0){
+                           data.map(item=>{
+                              this.orderList.all.push(item);
+                           })
+                        }else if(this.active==1){
+                            data.map(item=>{
+                                this.orderList.waitPay.push(item);
+                            })
+                        }else if(this.active==2){
+                            data.map(item=>{
+                                this.orderList.waitSetGoods.push(item);
+                            })
+                        }else if(this.active==3){
+                            data.map(item=>{
+                                this.orderList.waitHarvest.push(item);
+                            })
+
+                        }
+                        else{
+                            data.map(item=>{
+                                this.orderList.finish.push(item);
+                            })
+                        }
                     }
                 })
             },
@@ -349,6 +404,7 @@
                             this.orderList.all[index].OrderState='finish'
                         }
                         this.$toast('操作成功');
+                        this.$store.dispatch('GetUserInfo')
                     }
                 })
             }).catch(() => {
@@ -407,7 +463,19 @@
                 this.cancelShow=false;
             },
             tabClick(){
-                this.fetchData({userId:this.userId,stateModel:this.orderState})
+                this.fetchData()
+            },
+            //判断浏览器请求
+            handleScroll(){
+                let scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+                if((scrollTop+window.innerHeight)==document.body.offsetHeight){
+                    if(this.isFetchData[this.active]){
+                        this.fetchData()
+                    }else{
+                        this.$toast('没有更多了！');
+                        return false;
+                    }
+                }
             }
         }
     }
@@ -467,14 +535,17 @@
         text-align: right;
     }
     .order_box .list li .bottom b{
-        color:#FF7EA3;
+        color:#ff5044;
     }
     .order_box .list li .bottom>div span{
         color:#999999;
         margin-left:3px;
+        float:left;
     }
     .order_box .list li .bottom>div{
         padding:8px 0;
+       /* display: flex;
+        justify-content: space-between;*/
     }
     .order_box .list li .bottom button{
         height:25px;

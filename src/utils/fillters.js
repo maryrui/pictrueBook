@@ -28,7 +28,7 @@ export function orderState(state){
         return '待付款'
     }
     else if(state=='alreadyPay'){
-        return '已付款'
+        return '待发货'
     }
     else if(state=='waitHarvest'){
         return '待收货'

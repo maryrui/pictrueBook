@@ -272,8 +272,8 @@
         line-height:25px;
     }
     .footer .danger{
-        background:#FF7EA3;
+        background:#ff5044;
         color:#fff;
-        border-color:#FF7EA3;
+        border-color:#ff5044;
     }
 </style>

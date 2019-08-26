@@ -42,7 +42,7 @@ export function getDeposit(query){
 //提现到银行卡
 export function getDepositBank(data){
     return request ({
-        url:"/api/DrawMoneyApi/DrawMoneyToBank",
+        url:"/api/DrawMoneyApi/WxPayToBank",
         method: 'post',
         data
     })

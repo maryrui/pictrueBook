@@ -1,39 +1,10 @@
 <template>
-    <div class="sale_box">
-        <div class="sale_top">
-            <p>{{num}}</p>
-            <span>预估收益</span>
-        </div>
-        <p class="time_select" @click="timeShow=true">
-            {{currentDate.getFullYear()+'年'+(currentDate.getMonth()+1)+'月'}} <van-icon name="arrow-down" />
-        </p>
-        <ul>
-            <li v-for="(item,index) in list" :key="index">
-                <p><img :src="item.ImagePath" alt=""></p>
-                <div>
-                    <p>{{item.NickName}}</p>
-                    <span>{{item.Remark}}</span>
-                </div>
-                <div>
-                    <span>+{{item.Money}}</span>
-                    <p>{{item.CreateTime.split('-')[1]+'月'+item.CreateTime.split('-')[2]}}</p>
-                </div>
-            </li>
-        </ul>
-        <van-popup v-model="timeShow" position="bottom" :overlay="true">
-            <van-datetime-picker
-                    v-model="currentDate"
-                    type="year-month"
-                    @confirm="changeTime"
-                    @cancel="timeShow=false"
-                    :formatter="formatter"
-            />
-        </van-popup>
-    </div>
+    <integral-detail :list="list" @selectTimeClick="selectTimeClick" :isSale="true"></integral-detail>
 </template>
 
 <script>
     import {getSaleList} from '@/api/sale'
+    import integralDetail from '@/components/integralDetail'
     import {mapGetters} from 'vuex'
     export default {
         name: "index",
@@ -47,37 +18,32 @@
         },
         created(){
             this.num=this.$route.params.num;
-            console.log(this.num)
             this.init();
         },
         computed:{
             ...mapGetters([
-                'userId'
+                'userId',
+                'userInfo'
             ])
+        },
+        components:{
+            integralDetail
         },
         methods: {
             init(){
                 getSaleList({
                     userId:this.userId,
-                    incomeType:6,
+                    /*  incomeType:6,
                     startTime:this.currentDate.getFullYear()+'/'+(this.currentDate.getMonth()+1)+'/1',
-                    endTime:''+this.currentDate.getFullYear()+'/'+(this.currentDate.getMonth()+1)+'/'+new Date(this.currentDate.getFullYear(),this.currentDate.getMonth()+1,0).getDate()
+                     endTime:''+this.currentDate.getFullYear()+'/'+(this.currentDate.getMonth()+1)+'/'+new Date(this.currentDate.getFullYear(),this.currentDate.getMonth()+1,0).getDate()*/
                 }).then(res=>{
                     if(res.Success){
                         this.list=res.Data;
                     }
                 })
             },
-            formatter(type, value) {
-                if (type === 'year') {
-                    return `${value}年`;
-                } else if (type === 'month') {
-                    return `${value}月`
-                }
-                return value;
-            },
-            changeTime(){
-                this.timeShow=false;
+            selectTimeClick(item){
+                this.currentDate=item;
                 this.init();
             },
         }

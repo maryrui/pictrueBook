@@ -32,7 +32,7 @@
             </div>-->
             <div @click="cancelShow=true">
                 <span>换货原因</span>
-                <span class="text">{{reason ? reason : '请选择退货原因'}}</span>
+                <span class="text">{{reason ? reason : '请选择换货原因'}}</span>
                 <van-icon name="arrow"></van-icon>
             </div>
         </div>

@@ -12,6 +12,7 @@ const service=axios.create({
 service.interceptors.request.use(config=>{
     Toast.loading({
         mask: true,
+        duration: 0,
         message: '加载中...'
     })
 

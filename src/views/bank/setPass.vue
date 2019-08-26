@@ -81,6 +81,7 @@
                 var data=JSON.parse(sessionStorage.getItem('setBank'));
                data.Password=this.value1;
                 if(sessionStorage.getItem('setPass')=='find'){
+                    console.log(0)
                     findPassValidateBank(data).then(res=>{
                         if(res.Success){
                             this.$dialog.alert({

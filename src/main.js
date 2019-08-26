@@ -10,8 +10,13 @@ import './styles/index.css'
 import 'amfe-flexible'
 import * as filters from '@/utils/fillters.js'
 import {GetQueryString} from '@/utils/common'
-
-
+import { Lazyload } from 'vant'
+Vue.use( Lazyload,{
+    loading:'./static/images/loading.gif',
+    error:"./static/images/error.png",
+})
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
@@ -25,21 +30,19 @@ router.beforeEach((to, from, next) => {
     }
     if (userId==null&& to.path != "/author") {
         // 保存用户进入的url
-        if(localStorage.getItem('beforeLoginUrl')){
+
+            sessionStorage.setItem("beforeLoginUrl", to.path);
             next("/author");
             return false;
-        }else{
-            localStorage.setItem("beforeLoginUrl", to.path);
-        }
+
     }
     if (userId) {
-        console.log((store))
         store.commit('SET_USERID',userId);
         store.commit('SET_TOKEN',sessionStorage.getItem('token'));
         let data=store.getters.userInfo;
         data=JSON.stringify(data)
-        console.log(data);
         if(data=='{}'){
+
             store.dispatch('GetUserInfo').then(()=>{
                 next ();
                 return false;

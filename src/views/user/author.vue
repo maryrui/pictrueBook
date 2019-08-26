@@ -19,12 +19,13 @@
             //判断当前的url有没有token参数,如果不存在那就跳转到微信授权的url
             //就是前面说的ReturnGetCodeUrl方法
 
-            if (!userId) {
+            if (userId==null) {
                 let code = GetQueryString("code")
                 if(!code){
-                    let url = 'http://unicorn.mobile.aiteyou.net/#/'+window.localStorage.getItem("beforeLoginUrl");
+                    let url = 'http://unicorn.mobile.aiteyou.net/pictrue/#/'+window.localStorage.getItem("beforeLoginUrl");
+                    // let url = 'http://unicorn.mobile.aiteyou.net/test/#/'+window.localStorage.getItem("beforeLoginUrl");
                     url=encodeURIComponent(url)
-                    // window.location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2b6d5aab62d54ab9&redirect_uri='+url+'&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect';
+                   window.location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2b6d5aab62d54ab9&redirect_uri='+url+'&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect';
                 }else{
                     this.getUserId({code:code})
                 }
@@ -36,7 +37,7 @@
                     if(res.Success){
                         sessionStorage.setItem('userId',res.Data.UserId);
                         sessionStorage.setItem('token',res.Data.Token);
-                        this.$router.push(window.localStorage.getItem("beforeLoginUrl"))
+                        this.$router.push(window.sessionStorage.getItem("beforeLoginUrl"))
                     }
                 })
             }

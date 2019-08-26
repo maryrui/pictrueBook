@@ -18,7 +18,7 @@
             </li>
             <li>
                 <p>扣除税费</p>
-                <span>-￥ {{listData.amount*0.05}}</span>
+                <span>-￥ {{Math.ceil(listData.amount*0.05)}}</span>
             </li>
         </ul>
     </div>

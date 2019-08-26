@@ -2,7 +2,7 @@
     <div class="detail">
         <div class="detail_status">
             <van-icon name="orders-o"></van-icon>{{detail.OrderState | orderState}}
-            <p>您的购买的物品{{detail.OrderState | orderState}}，{{detail.OrderState | stateTip}}</p>
+            <p>您购买的物品{{detail.OrderState | orderState}}，{{detail.OrderState | stateTip}}</p>
         </div>
         <div class="detail_address">
             <h3><van-icon name="location-o"></van-icon>{{detail.Name}} {{detail.Phone}}</h3>
@@ -12,7 +12,7 @@
             <img :src="detail ? detail.ImagePath : ''" alt="">
             <h3>{{detail ? detail.ProductName : ''}}</h3>
             <p>
-                <b>￥{{detail.Price}}</b> <br>
+                <b>{{detail.TableName==4 ? '积分' : '￥'}}{{detail.Price}}</b> <br>
                  <span>✖{{detail.Count}}</span>
             </p>
         </div>
@@ -22,27 +22,27 @@
             <p>发货时间： {{detail.OrderShipment ? detail.OrderShipment.CreateTime : '未发货'}}</p>
         </div>
         <div class="detail_money">
-            <p><b>实付金额</b><span>￥{{detail.OrderPayRecord ? detail.OrderPayRecord.Money : '0.00'}}</span></p>
-            <p><b>商品总价</b><span>￥{{detail.TotalMoney}}</span></p>
+            <p v-if='detail.TableName!=4'><b>实付金额</b><span>{{detail.TableName==4 ? '积分: ' : '￥'}}{{detail.OrderPayRecord ? detail.OrderPayRecord.Money : '0.00'}}</span></p>
+            <p><b>商品总价</b><span>{{detail.TableName==4 ? '积分: ' : '￥'}}{{detail.TotalMoney}}</span></p>
             <p><b>运费</b><span>￥0.00</span></p>
         </div>
         <div class="footer">
             <p v-if="detail.OrderState=='finish'">
-                <button @click="buyAgain">再次购买</button>
+                <!--<button @click="buyAgain">再次购买</button>-->
                 <button @click="showExpress(detail.OrderShipment.LogisticCode,detail.OrderShipment.ShipperCode,detail.OrderNumber)" v-show="detail.OrderShipment">查看物流</button>
             </p>
-            <p v-if="detail.OrderState=='alreadyCancel'">
+           <!-- <p v-if="detail.OrderState=='alreadyCancel'">
                 <button @click="buyAgain">再次购买</button>
-            </p>
-            <p v-if="detail.OrderState=='waitPay'">
+            </p>-->
+            <p v-if="detail.OrderState=='waitPay'&& parseInt(userId)==parseInt(detail.UserId)">
                 <button @click="resetAddress">修改地址</button>
                 <button @click="cancelOrder">取消订单</button>
                 <button @click="nowPay" class="danger">立即付款</button>
             </p>
             <p v-if="detail.OrderState=='waitHarvest'">
-                <button @click="afterService">退款/售后</button>
+                <button @click="afterService" v-show="parseInt(userId)==parseInt(detail.UserId)">退款/售后</button>
                 <button @click="showExpress(detail.OrderShipment.LogisticCode,detail.OrderShipment.ShipperCode,detail.OrderNumber)" v-show="detail.OrderShipment">查看物流</button>
-                <button @click="receipt(detail.OrderNumber)" class="danger">确认收货</button>
+                <button @click="receipt(detail.OrderNumber)" class="danger" v-show="parseInt(userId)==parseInt(detail.UserId)">确认收货</button>
             </p>
         </div>
         <van-popup v-model="cancelShow"  position="bottom" :overlay="true">
@@ -139,6 +139,7 @@
                             this.cancelShow=false;
                             this.detail.OrderState='finish'
                             this.$toast('操作成功');
+                            this.$store.dispatch('GetUserInfo')
                         }
                     })
                 }).catch(err=>{
